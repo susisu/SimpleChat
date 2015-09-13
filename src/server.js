@@ -23,22 +23,36 @@ function Server() {
 
     var userId = 0;
     function onIOConnection(socket) {
-        var screenName = "No Name " + userId.toString();
+        var screenName = "User " + userId.toString();
+        var loggedIn = false;
         userId++;
 
-        io.emit("welcome", "Welcome!");
+        socket.emit("welcome", {
+            "date"   : Date.now(),
+            "message": "Welcome!"
+        });
         
-        socket.on("nameChange", onNameChange);
-        function onNameChange(data) {
+        socket.on("login", onLogin);
+        function onLogin(data) {
             if (data["screen_name"]) {
                 screenName = data["screen_name"];
             }
+            loggedIn = true;
+            io.emit("userConnected", {
+                "date"       : Date.now(),
+                "screen_name": screenName
+            });
+            io.emit("serverMessage", {
+                "date"   : Date.now(),
+                "message": "Welcome, " + screenName + "!"
+            });
         }
 
         socket.on("message", onMessage);
         function onMessage(data) {
-            if (data["message"]) {
+            if (loggedIn && data["message"]) {
                 io.emit("message", {
+                    "date"       : Date.now(),
                     "screen_name": screenName,
                     "message"    : data["message"]
                 });
@@ -46,7 +60,11 @@ function Server() {
         }
 
         socket.once("disconnect", function () {
-            socket.removeListener("nameChange", onNameChange);
+            io.emit("serverMessage", {
+                "date"   : Date.now(),
+                "message": "Bye, " + screenName + "!"
+            });
+            socket.removeListener("login", onLogin);
             socket.removeListener("message", onMessage);
         });
     }
