@@ -57,13 +57,13 @@ Chat.prototype.logout = function () {
 };
 
 Chat.prototype.switchToLoginScreen = function () {
-    this.loginScreen.style.visibility = "visible";
-    this.chatScreen.style.visibility = "hidden";
+    this.loginScreen.style.display = "block";
+    this.chatScreen.style.display = "none";
 };
 
 Chat.prototype.switchToChatScreen = function () {
-    this.loginScreen.style.visibility = "hidden";
-    this.chatScreen.style.visibility = "visible";
+    this.loginScreen.style.display = "none";
+    this.chatScreen.style.display = "block";
 };
 
 module.exports = Chat;
