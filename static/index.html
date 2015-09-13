@@ -4,8 +4,41 @@
 		<meta charset="utf-8">
 		<title>Simple Chat</title>
 		<script type="text/javascript" src="./index.js"></script>
+		<link rel="stylesheet" type="text/css" href="./style.css">
 	</head>
 	<body>
-		<p>Hello, world!</p>
+		<div id="login-screen">
+			<header>
+				<h1>Simple Chat</h1>
+			</header>
+			<div id="host-panel" class="panel">
+				<header>
+					<h1>Log in as host</h1>
+				</header>
+				<form id="host-form">
+					<input type="hidden" name="host" value="" id="host-form-host">
+					<label>
+						port: <input type="text" name="port" value="" id="host-form-port">
+					</label>
+					<input type="button" value="login" id="host-form-login">
+				</form>
+			</div>
+			<div id="client-panel" class="panel">
+				<header>
+					<h1>Log in as a client</h1>
+				</header>
+				<form id="client-form">
+					<label>
+						host: <input type="text" name="host" value="" id="client-form-host">
+					</label>
+					<label>
+						port: <input type="text" name="port" value="" id="client-form-port">
+					</label>
+					<input type="button" value="login" id="client-form-login">
+				</form>
+			</div>
+		</div>
+		<div id="chat-screen">
+		</div>
 	</body>
 </html>
