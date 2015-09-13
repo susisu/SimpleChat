@@ -4,4 +4,21 @@
 
 "use strict";
 
-var appRootDir = __dirname;
+var app = require("app");
+var packageInfo = require("./package.json");
+
+var appInfo = {
+    "rootDir"   : __dirname,
+    "version"   : packageInfo.version,
+    "bootScript": __dirname + "/src/chat.js"
+};
+
+app.on("ready", function () {
+    require("./src/browser/app.js")(appInfo);
+});
+
+app.on("window-all-closed", function () {
+    if (process.platform != "darwin") {
+        app.quit();
+    }
+});
