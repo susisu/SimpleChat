@@ -40,6 +40,7 @@ function Server() {
             loggedIn = true;
             io.emit("userConnected", {
                 "date"       : Date.now(),
+                "user_id"    : userId,
                 "screen_name": screenName
             });
             io.emit("serverMessage", {
@@ -53,6 +54,7 @@ function Server() {
             if (loggedIn && data["message"]) {
                 io.emit("message", {
                     "date"       : Date.now(),
+                    "user_id"    : userId,
                     "screen_name": screenName,
                     "message"    : data["message"]
                 });
