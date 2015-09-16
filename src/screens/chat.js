@@ -28,6 +28,19 @@ function ChatScreen(chat) {
     });
 
     var chatMessages = window.document.getElementById("chat-messages");
+
+    var memberElems = [];
+    function updateMembers() {
+        var oldMemberElems = chatMembers.childNodes;
+        var i;
+        for (i = 0; i < oldMemberElems.length; i++) {
+            chatMembers.removeChild(oldMemberElems[i]);
+        }
+        for (i = 0; i < memberElems.length; i++) {
+            chatMembers.appendChild(memberElems[i]["elem"]);
+        }
+    }
+
     function updateMessages(message) {
         var messageElem = window.document.createElement("li");
         messageElem.innerText = message;
@@ -35,8 +48,22 @@ function ChatScreen(chat) {
     }
 
     chat.on("userConnected", function (data) {
+        var elem = window.document.createElement("li");
+        elem.innerText = data["screen_name"];
+        memberElems.push({
+            "user_id": data["user_id"],
+            "elem"   : elem
+        });
+        updateMembers();
     });
     chat.on("userDisconnected", function (data) {
+        for (var i = 0; i < memberElems.length; i++) {
+            if (memberElems[i]["user_id"] === data["user_id"]) {
+                memberElems.splice(i, 1);
+                break;
+            }
+        }
+        updateMembers();
     });
     chat.on("serverMessage", function (data) {
         updateMessages(data["message"]);
