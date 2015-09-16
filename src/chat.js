@@ -89,7 +89,7 @@ Chat.prototype.__setupSocket__ = function () {
         chat.emit("message", data);
     });
     this.socket.on("disconnect", function (data) {
-
+        chat.emit("disconnect", data);
     });
 };
 
