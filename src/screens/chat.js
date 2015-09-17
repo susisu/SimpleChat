@@ -31,12 +31,10 @@ function ChatScreen(chat) {
 
     var memberElems = [];
     function updateMembers() {
-        var oldMemberElems = chatMembers.childNodes;
-        var i;
-        for (i = 0; i < oldMemberElems.length; i++) {
-            chatMembers.removeChild(oldMemberElems[i]);
+        while (chatMembers.firstChild) {
+            chatMembers.removeChild(chatMembers.firstChild);
         }
-        for (i = 0; i < memberElems.length; i++) {
+        for (var i = 0; i < memberElems.length; i++) {
             chatMembers.appendChild(memberElems[i]["elem"]);
         }
     }
