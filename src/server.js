@@ -62,6 +62,11 @@ function Server() {
         }
 
         socket.once("disconnect", function () {
+            io.emit("userDisconnected", {
+                "date"       : Date.now(),
+                "user_id"    : userId,
+                "screen_name": screenName
+            });
             io.emit("serverMessage", {
                 "date"   : Date.now(),
                 "message": "Bye, " + screenName + "!"
