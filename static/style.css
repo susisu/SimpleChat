@@ -62,3 +62,42 @@ body {
 #chat-messages-area {
     overflow: scroll;
 }
+
+#chat-messages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat-message {
+    position: relative;
+    margin: 2px 8px;
+    border: 1px solid #C0C0C0;
+    border-radius: 4px;
+}
+
+.chat-message:nth-child(even) {
+    background-color: #F0FFFF;
+}
+
+.chat-message-name {
+    margin: 0;
+    padding: 2px 4px;
+    background-color: #F0F0F0;
+    overflow: hidden;
+}
+
+.chat-message-text {
+    margin: 0;
+    padding: 2px 4px;
+    overflow: scroll;
+}
+
+.chat-message-date {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 60%;
+    margin: 4px;
+}
+

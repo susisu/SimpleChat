@@ -39,9 +39,21 @@ function ChatScreen(chat) {
         }
     }
 
-    function updateMessages(message) {
+    function updateMessages(data) {
+        var name = window.document.createElement("p");
+        name.className = "chat-message-name";
+        name.innerText = data["screen_name"];
+        var text = window.document.createElement("p");
+        text.className = "chat-message-text";
+        text.innerText = data["message"];
+        var date = window.document.createElement("p");
+        date.className = "chat-message-date";
+        date.innerText = new Date(data["date"]).toLocaleString();
         var messageElem = window.document.createElement("li");
-        messageElem.innerText = message;
+        messageElem.className = "chat-message";
+        messageElem.appendChild(name);
+        messageElem.appendChild(text);
+        messageElem.appendChild(date);
         chatMessages.appendChild(messageElem);
     }
 
@@ -64,10 +76,10 @@ function ChatScreen(chat) {
         updateMembers();
     });
     chat.on("serverMessage", function (data) {
-        updateMessages(data["message"]);
+        updateMessages(data);
     });
     chat.on("message", function (data) {
-        updateMessages(data["screen_name"] + ": " + data["message"]);
+        updateMessages(data);
     });
 
     return chatScreen;
