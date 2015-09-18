@@ -7,19 +7,29 @@
 var http = require("http");
 
 function Server() {
-    var server = http.createServer(function (request, response) {
+    this.isRunning = false;
+    this.server = null;
+    this.io = null;
+}
+
+Server.prototype.start = function (port) {
+    if (this.isRunning) {
+        return;
+    }
+    var self = this;
+    this.server = http.createServer(function (request, response) {
         response.writeHead(200);
         response.end("It works!");
     });
-    var io = require("socket.io")(server);
+    this.io = require("socket.io")(this.server);
 
-    server.once("close", function () {
-        io.removeListener("connection", onIOConnection);
-        server = null;
-        io = null;
+    this.server.once("close", function () {
+        self.io.removeListener("connection", onIOConnection);
+        self.server = null;
+        self.io = null;
     });
 
-    io.on("connection", onIOConnection);
+    this.io.on("connection", onIOConnection);
 
     var userId = 0;
     function onIOConnection(socket) {
@@ -38,12 +48,12 @@ function Server() {
                 screenName = data["screen_name"];
             }
             loggedIn = true;
-            io.emit("userConnected", {
+            self.io.emit("userConnected", {
                 "date"       : Date.now(),
                 "user_id"    : userId,
                 "screen_name": screenName
             });
-            io.emit("serverMessage", {
+            self.io.emit("serverMessage", {
                 "date"   : Date.now(),
                 "message": "Welcome, " + screenName + "!"
             });
@@ -52,7 +62,7 @@ function Server() {
         socket.on("message", onMessage);
         function onMessage(data) {
             if (loggedIn && data["message"]) {
-                io.emit("message", {
+                self.io.emit("message", {
                     "date"       : Date.now(),
                     "user_id"    : userId,
                     "screen_name": screenName,
@@ -62,12 +72,12 @@ function Server() {
         }
 
         socket.once("disconnect", function () {
-            io.emit("userDisconnected", {
+            self.io.emit("userDisconnected", {
                 "date"       : Date.now(),
                 "user_id"    : userId,
                 "screen_name": screenName
             });
-            io.emit("serverMessage", {
+            self.io.emit("serverMessage", {
                 "date"   : Date.now(),
                 "message": "Bye, " + screenName + "!"
             });
@@ -75,8 +85,20 @@ function Server() {
             socket.removeListener("message", onMessage);
         });
     }
+    this.server.listen(port);
+    this.isRunning = true;
+};
 
-    return server;
-}
+Server.prototype.stop = function () {
+    if (!this.isRunning) {
+        return;
+    }
+    this.server.close();
+    this.server.removeAllListeners();
+    this.io.of("/").removeAllListeners();
+    this.server = null;
+    this.io = null;
+    this.isRunning = false;
+};
 
-module.exports = Server;
+module.exports = new Server();

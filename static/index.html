@@ -11,38 +11,33 @@
 			<header>
 				<h1>Simple Chat</h1>
 			</header>
-			<div id="host-panel" class="panel">
+			<div id="server-panel" class="panel">
 				<header>
-					<h1>Log in as host</h1>
+					<h1>Server control</h1>
 				</header>
-				<form id="host-form">
-					<input type="hidden" name="host" value="" id="host-form-host">
+				<form id="server-form">
 					<label>
-						user name: <input type="text" name="name" value="" id="host-form-name">
+						port: <input type="text" name="port" value="" id="server-form-port">
 					</label>
-					<br>
-					<label>
-						port: <input type="text" name="port" value="" id="host-form-port">
-					</label>
-					<input type="button" value="login" id="host-form-login">
+					<input type="button" value="start" id="server-form-toggle-start">
 				</form>
 			</div>
-			<div id="client-panel" class="panel">
+			<div id="login-panel" class="panel">
 				<header>
-					<h1>Log in as a client</h1>
+					<h1>Log in</h1>
 				</header>
-				<form id="client-form">
+				<form id="login-form">
 					<label>
-						user name: <input type="text" name="name" value="" id="client-form-name">
+						user name: <input type="text" name="name" value="" id="login-form-name">
 					</label>
 					<br>
 					<label>
-						host: <input type="text" name="host" value="" id="client-form-host">
+						host: <input type="text" name="host" value="" id="login-form-host">
 					</label>
 					<label>
-						port: <input type="text" name="port" value="" id="client-form-port">
+						port: <input type="text" name="port" value="" id="login-form-port">
 					</label>
-					<input type="button" value="login" id="client-form-login">
+					<input type="button" value="login" id="login-form-login">
 				</form>
 			</div>
 		</div>

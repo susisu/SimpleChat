@@ -7,51 +7,61 @@
 function LoginScreen(chat) {
     var loginScreen = window.document.getElementById("login-screen");
 
-    var hostFormHost = window.document.getElementById("host-form-host");
-    hostFormHost.value = chat.localhost;
-    var hostFormName = window.document.getElementById("host-form-name");
-    hostFormName.value = chat.screenName.toString();
-    hostFormName.addEventListener("keypress", function (event) {
+    var serverFormPort = window.document.getElementById("server-form-port");
+    serverFormPort.value = chat.localport.toString();
+    serverFormPort.addEventListener("keypress", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
         }
     });
-    var hostFormPort = window.document.getElementById("host-form-port");
-    hostFormPort.value = chat.localport.toString();
-    hostFormPort.addEventListener("keypress", function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
+    var serverFormToggleStart = window.document.getElementById("server-form-toggle-start");
+    serverFormToggleStart.addEventListener("click", function () {
+        chat.localport = parseInt(serverFormPort.value);
+        if (chat.server.isRunning) {
+            chat.stopServer();
         }
-    });
-    var hostFormLogin = window.document.getElementById("host-form-login");
-    hostFormLogin.addEventListener("click", function () {
-        chat.loginLocal(hostFormName.value, parseInt(hostFormPort.value));
+        else {
+            chat.startServer();
+        }
+        reflectServerState();
     });
 
-    var clientFormName = window.document.getElementById("client-form-name");
-    clientFormName.value = chat.screenName;
-    clientFormName.addEventListener("keypress", function (event) {
+    function reflectServerState() {
+        if (chat.server.isRunning) {
+            serverFormPort.setAttribute("disabled", "");
+            serverFormToggleStart.value = "Stop"
+        }
+        else {
+            serverFormPort.removeAttribute("disabled");
+            serverFormToggleStart.value = "Start";
+        }
+    }
+    reflectServerState();
+
+    var loginFormName = window.document.getElementById("login-form-name");
+    loginFormName.value = chat.screenName;
+    loginFormName.addEventListener("keypress", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
         }
     });
-    var clientFormHost = window.document.getElementById("client-form-host");
-    clientFormHost.value = chat.host;
-    clientFormHost.addEventListener("keypress", function (event) {
+    var loginFormHost = window.document.getElementById("login-form-host");
+    loginFormHost.value = chat.host;
+    loginFormHost.addEventListener("keypress", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
         }
     });
-    var clientFormPort = window.document.getElementById("client-form-port");
-    clientFormPort.value = chat.port.toString();
-    clientFormPort.addEventListener("keypress", function (event) {
+    var loginFormPort = window.document.getElementById("login-form-port");
+    loginFormPort.value = chat.port.toString();
+    loginFormPort.addEventListener("keypress", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
         }
     });
-    var clientFormLogin = window.document.getElementById("client-form-login");
-    clientFormLogin.addEventListener("click", function () {
-        chat.login(clientFormName.value, clientFormHost.value, parseInt(clientFormPort.value));
+    var loginFormLogin = window.document.getElementById("login-form-login");
+    loginFormLogin.addEventListener("click", function () {
+        chat.login(loginFormName.value, loginFormHost.value, parseInt(loginFormPort.value));
     });
 
     return loginScreen;

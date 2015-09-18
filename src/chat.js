@@ -4,6 +4,7 @@
 
 "use strict";
 
+var remote = require("remote");
 var io = require("socket.io-client");
 var EventEmitter = require("events");
 
@@ -14,7 +15,7 @@ function Chat(appInfo) {
 
     EventEmitter.call(this);
 
-    this.server = null;
+    this.server = remote.require(appInfo.rootDir + "/src/server.js");
     this.screenName = "user";
     this.localhost = "localhost";
     this.localport = 8000;
@@ -33,16 +34,11 @@ Chat.prototype = Object.create(EventEmitter.prototype);
 Chat.prototype.constructor = Chat;
 
 Chat.prototype.startServer = function () {
-    if (!this.server) {
-        this.server = require("./server.js")();
-        this.server.listen(this.localport);
-    }
+    this.server.start(this.localport);
 };
 
 Chat.prototype.stopServer = function () {
-    if (this.server) {
-        this.server.close();
-    }
+    this.server.stop();
 };
 
 Chat.prototype.login = function (screenName, host, port) {
@@ -58,7 +54,7 @@ Chat.prototype.login = function (screenName, host, port) {
 };
 
 Chat.prototype.loginLocal = function (screenName, localport) {
-    if (!this.loggedIn && !this.server) {
+    if (!this.loggedIn) {
         this.screenName = screenName;
         this.localport = localport;
         this.startServer();
