@@ -46,19 +46,10 @@ Chat.prototype.login = function (screenName, host, port) {
         this.screenName = screenName;
         this.host = host;
         this.port = port;
-        this.socket = io.connect("http://" + this.host + ":" + this.port.toString());
-        this.__setupSocket__();
-    }
-    this.switchToChatScreen();
-    this.loggedIn = true;
-};
-
-Chat.prototype.loginLocal = function (screenName, localport) {
-    if (!this.loggedIn) {
-        this.screenName = screenName;
-        this.localport = localport;
-        this.startServer();
-        this.socket = io.connect("http://" + this.localhost + ":" + this.localport.toString());
+        this.socket =
+            io("http://" + this.host + ":" + this.port.toString(), {
+                "multiplex": false
+            });
         this.__setupSocket__();
     }
     this.switchToChatScreen();
@@ -98,8 +89,11 @@ Chat.prototype.sendMessage = function (message) {
 };
 
 Chat.prototype.logout = function () {
-
+    this.socket.disconnect();
     this.socket.removeAllListeners();
+    this.socket = null;
+    this.loggedIn = false;
+    this.switchToLoginScreen();
 };
 
 Chat.prototype.switchToLoginScreen = function () {

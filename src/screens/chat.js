@@ -9,6 +9,11 @@ function ChatScreen(chat) {
 
     var chatMembers = window.document.getElementById("chat-members");
 
+    var chatExit = window.document.getElementById("chat-logout");
+    chatExit.addEventListener("click", function () {
+        chat.logout();
+    });
+
     var chatMessageInput = window.document.getElementById("chat-message-input");
     chatMessageInput.addEventListener("keypress", function (event) {
         if (event.keyCode === 13) {
