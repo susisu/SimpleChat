@@ -12,6 +12,7 @@ function ChatScreen(chat) {
     var chatExit = window.document.getElementById("chat-logout");
     chatExit.addEventListener("click", function () {
         chat.logout();
+        clearMessages();
     });
 
     var chatMessageInput = window.document.getElementById("chat-message-input");
@@ -41,6 +42,12 @@ function ChatScreen(chat) {
         }
         for (var i = 0; i < memberElems.length; i++) {
             chatMembers.appendChild(memberElems[i]["elem"]);
+        }
+    }
+
+    function clearMessages() {
+        while (chatMessages.firstChild) {
+            chatMessages.removeChild(chatMessages.firstChild);
         }
     }
 
