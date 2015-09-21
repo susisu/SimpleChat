@@ -31,15 +31,18 @@ Server.prototype.start = function (port) {
 
     this.io.on("connection", onIOConnection);
 
-    var userId = 0;
+    var userCount = 0;
+    var users = [];
     function onIOConnection(socket) {
+        var userId = userCount;
         var screenName = "User " + userId.toString();
         var loggedIn = false;
-        userId++;
+        userCount++;
 
         socket.emit("welcome", {
             "date"   : Date.now(),
-            "message": "Welcome!"
+            "message": "Welcome!",
+            "users"  : users
         });
         
         socket.on("login", onLogin);
@@ -48,6 +51,10 @@ Server.prototype.start = function (port) {
                 screenName = data["screen_name"];
             }
             loggedIn = true;
+            users.push({
+                "user_id"    : userId,
+                "screen_name": screenName
+            });
             self.io.emit("userConnected", {
                 "date"       : Date.now(),
                 "user_id"    : userId,
@@ -72,6 +79,12 @@ Server.prototype.start = function (port) {
         }
 
         socket.once("disconnect", function () {
+            for (var i = 0; i < users.length; i++) {
+                if (users[i]["user_id"] === userId) {
+                    users.splice(i, 1);
+                    break;
+                }
+            }
             self.io.emit("userDisconnected", {
                 "date"       : Date.now(),
                 "user_id"    : userId,

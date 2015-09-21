@@ -12,6 +12,8 @@ function ChatScreen(chat) {
     var chatExit = window.document.getElementById("chat-logout");
     chatExit.addEventListener("click", function () {
         chat.logout();
+        clearMembers();
+        memberElems = [];
         clearMessages();
     });
 
@@ -36,10 +38,14 @@ function ChatScreen(chat) {
     var chatMessages = window.document.getElementById("chat-messages");
 
     var memberElems = [];
-    function updateMembers() {
+    function clearMembers() {
         while (chatMembers.firstChild) {
             chatMembers.removeChild(chatMembers.firstChild);
         }
+    }
+
+    function updateMembers() {
+        clearMembers();
         for (var i = 0; i < memberElems.length; i++) {
             chatMembers.appendChild(memberElems[i]["elem"]);
         }
@@ -68,6 +74,18 @@ function ChatScreen(chat) {
         messageElem.appendChild(date);
         chatMessages.appendChild(messageElem);
     }
+
+    chat.on("welcome", function (data) {
+        for (var i = 0; i < data["users"].length; i++) {
+            var elem = window.document.createElement("li");
+            elem.innerText = data["users"][i]["screen_name"];
+            memberElems.push({
+                "user_id": data["users"][i]["user_id"],
+                "elem"   : elem
+            });
+        }
+        updateMembers();
+    });
 
     chat.on("userConnected", function (data) {
         var elem = window.document.createElement("li");

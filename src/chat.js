@@ -59,6 +59,7 @@ Chat.prototype.login = function (screenName, host, port) {
 Chat.prototype.__setupSocket__ = function () {
     var chat = this;
     this.socket.on("welcome", function (data) {
+        chat.emit("welcome", data);
         chat.socket.emit("login", {
             "screen_name": chat.screenName
         });
