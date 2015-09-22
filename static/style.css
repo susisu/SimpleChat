@@ -87,6 +87,14 @@ body {
     overflow: hidden;
 }
 
+.chat-server-message-name {
+    margin: 0;
+    padding: 2px 4px;
+    background-color: #F0F0F0;
+    font-weight: bold;
+    overflow: hidden;
+}
+
 .chat-message-text {
     margin: 0;
     padding: 2px 4px;

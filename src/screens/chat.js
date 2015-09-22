@@ -59,8 +59,14 @@ function ChatScreen(chat) {
 
     function updateMessages(data) {
         var name = window.document.createElement("p");
-        name.className = "chat-message-name";
-        name.innerText = data["screen_name"];
+        if (data["screen_name"]) {
+            name.className = "chat-message-name";
+            name.innerText = data["screen_name"];
+        }
+        else {
+            name.className = "chat-server-message-name";
+            name.innerText = "Server"
+        }
         var text = window.document.createElement("p");
         text.className = "chat-message-text";
         text.innerText = data["message"];
