@@ -4,25 +4,14 @@
 
 "use strict";
 
-var BrowserWindow = require("browser-window");
-
-var mainWindow = null;
+var Menu = require("menu");
 
 function Application(appInfo) {
     if (!(this instanceof Application)) {
         return new Application(appInfo);
     }
-    openMainWindow(appInfo);
-}
-
-function openMainWindow(appInfo) {
-    if (!mainWindow) {
-        mainWindow = new BrowserWindow({ "width": 480, "height": 640 });
-        mainWindow.once("closed", function () {
-            mainWindow = null;
-        });
-        mainWindow.loadUrl("file://" + appInfo.rootDir + "/static/index.html#" + JSON.stringify(appInfo));
-    }
+    Menu.setApplicationMenu(require("./menu.js")(appInfo));
+    require("./window.js").openMainWindow(appInfo);
 }
 
 module.exports = Application;

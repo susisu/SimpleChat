@@ -8,8 +8,9 @@ var app = require("app");
 var packageInfo = require("./package.json");
 
 var appInfo = {
-    "rootDir"   : __dirname,
+    "name"      : packageInfo.name,
     "version"   : packageInfo.version,
+    "rootDir"   : __dirname,
     "bootScript": __dirname + "/src/chat.js"
 };
 
