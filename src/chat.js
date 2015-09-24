@@ -91,11 +91,13 @@ Chat.prototype.sendMessage = function (message) {
 };
 
 Chat.prototype.logout = function () {
-    this.socket.disconnect();
-    this.socket.removeAllListeners();
-    this.socket = null;
-    this.loggedIn = false;
-    this.switchToLoginScreen();
+    if (this.socket && this.loggedIn) {
+        this.socket.removeAllListeners();
+        this.socket.disconnect();
+        this.socket = null;
+        this.loggedIn = false;
+        this.switchToLoginScreen();
+    }
 };
 
 Chat.prototype.switchToLoginScreen = function () {
