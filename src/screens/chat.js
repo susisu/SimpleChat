@@ -11,10 +11,7 @@ function ChatScreen(chat) {
 
     var chatExit = window.document.getElementById("chat-logout");
     chatExit.addEventListener("click", function () {
-        chat.logout();
-        clearMembers();
-        memberElems = [];
-        clearMessages();
+        logout();
     });
 
     var chatMessageInput = window.document.getElementById("chat-message-input");
@@ -36,6 +33,13 @@ function ChatScreen(chat) {
     });
 
     var chatMessages = window.document.getElementById("chat-messages");
+
+    function logout() {
+        chat.logout();
+        clearMembers();
+        memberElems = [];
+        clearMessages();
+    }
 
     var memberElems = [];
     function clearMembers() {
@@ -116,6 +120,9 @@ function ChatScreen(chat) {
     });
     chat.on("message", function (data) {
         updateMessages(data);
+    });
+    chat.on("disconnect", function (data) {
+        logout();
     });
 
     return chatScreen;
