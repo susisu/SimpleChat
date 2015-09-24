@@ -84,6 +84,7 @@ Chat.prototype.__setupSocket__ = function () {
 Chat.prototype.sendMessage = function (message) {
     if (this.loggedIn && this.socket) {
         this.socket.emit("message", {
+            "date"   : Date.now(),
             "message": message
         });
     }
