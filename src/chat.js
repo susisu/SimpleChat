@@ -15,7 +15,7 @@ function Chat(appInfo) {
 
     EventEmitter.call(this);
 
-    this.server = remote.require(appInfo.rootDir + "/src/server.js");
+    this.server = remote.require(appInfo.rootDir + "/src/browser/server.js");
     this.screenName = "user";
     this.localhost = "localhost";
     this.localport = 8000;
